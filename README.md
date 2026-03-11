@@ -206,8 +206,19 @@ The first version split documents every 500 characters — cutting sentences mid
 ### 2. Exam Mode Precision
 Standard RAG paraphrases answers. Exam Mode needs exact text retrieval. Solved by adjusting the LLM prompt — instructing it to quote directly from retrieved chunks rather than synthesising. Temperature set to 0 for deterministic output.
 
-### 3. RAM Constraints
-Running Mistral 7B on 8GB RAM leaves minimal headroom for other processes. Implemented lazy loading — the model only loads when a query is made, not on startup. Fallback to phi3-mini for lower RAM environments.
+### Challenge 3 — Model Memory Exceeded Available RAM
+
+**What happened:**
+Mistral 7B was the first model I tried. The ingestion pipeline worked perfectly — 29 pages chunked into 45 pieces, vectors stored in ChromaDB. But the moment I sent the first question, the server crashed with:"model requires more system memory (4.5 GiB) than is available (3.5 GiB)"
+Mistral 7B needs 4.5GB of RAM just for the model itself. On a machine with 8GB total, the OS, Chrome, VS Code and ChromaDB were already consuming 4.5GB — leaving only 3.5GB free. Not enough.
+
+**What I learned:**
+RAM management is not just a hardware problem —it is an architectural decision. In production fintech and telco systems, model selection is driven partly by infrastructure constraints. 
+A model that works on a 32GB cloud instance will not work on an 8GB edge device.
+
+**The fix:**
+Switched to phi3:mini — Microsoft's lightweight model that delivers strong Q&A performance at 2.3GB RAM. Same RAG pipeline, same four modes, smaller footprint.
+This is the same trade-off engineers make when choosing models for mobile deployment, IoT devices and low-resource environments across Africa where high-end hardware is not always available.
 
 ### 4. PDF Formatting
 KU lecture notes as PDFs often have inconsistent formatting — scanned images, two-column layouts, mathematical notation. PyPDF2 handles clean PDFs well. Scanned PDFs required adding pytesseract for OCR.
