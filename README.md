@@ -30,6 +30,14 @@ Not generic internet answers. Your materials. Your units. Your university.
 ---
 
 ## Four Modes
+Mode Design Philosophy
+
+Four modes are strictly closed-domain — they only retrieve from uploaded documents. This is intentional.
+KU lecturers who practice closed-domain evaluation award marks based on exact note wording. Pulling external sources into those modes would actively harm students preparing for those exams.
+
+Deep mode is the single exception — explicitly opt-in, clearly labelled, designed for conceptual understanding not exam preparation.
+The system respects the difference between learning and performing.
+
 
 | Mode | What It Does | When To Use It |
 |------|-------------|----------------|
@@ -37,8 +45,8 @@ Not generic internet answers. Your materials. Your units. Your university.
 | 🧠 **Simplify** | Explains dense concepts in plain human language | Waveguides at midnight. Any unit that feels impossible. |
 | 💻 **Practical** | Bridges theory to working code examples | Python, programming units — when notes teach syntax but not application |
 | 🎯 **Exam** | Retrieves exact wording from your lecturer's notes | For that lecturer. You know which one. |
+|**Deep mode** | Understand what's being asked,retrieves from YOUR notes first,identifies what's missing or incomplete,searches the web to fill the gaps, synthesizes everything into one structured answer more as an Agentic RAG.
 
----
 
 ## How It Works
 
