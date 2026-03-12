@@ -228,10 +228,11 @@ A model that works on a 32GB cloud instance will not work on an 8GB edge device.
 Switched to phi3:mini — Microsoft's lightweight model that delivers strong Q&A performance at 2.3GB RAM. Same RAG pipeline, same four modes, smaller footprint.
 This is the same trade-off engineers make when choosing models for mobile deployment, IoT devices and low-resource environments across Africa where high-end hardware is not always available.
 
-### 4. PDF Formatting
-KU lecture notes as PDFs often have inconsistent formatting — scanned images, two-column layouts, mathematical notation. PyPDF2 handles clean PDFs well. Scanned PDFs required adding pytesseract for OCR.
-
----
+**###Challenge 4** — Local LLM Response Latency
+phi3:mini runs entirely on local hardware.On an 8GB RAM machine, generation takes 2-3 minutes per query. Acceptable for development and testing.
+Unacceptable for a product used by hundreds of students simultaneously.
+**Solution**: Migrate to Groq API for deployment.
+Same open source models, cloud inference hardware,3-5 second response times, free tier available.
 
 ## Project Status
 
