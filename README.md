@@ -234,21 +234,6 @@ Unacceptable for a product used by hundreds of students simultaneously.
 **Solution**: Migrate to Groq API for deployment.
 Same open source models, cloud inference hardware,3-5 second response times, free tier available.
 
-## Project Status
-
-```
-✅ Architecture designed
-✅ README documented  
-🔄 Document ingestion pipeline — in progress
-🔄 ChromaDB vector store setup — in progress
-⬜ Flask API endpoints
-⬜ Four mode implementation
-⬜ Frontend interface
-⬜ Testing with real KU documents
-```
-
----
-
 ## Real World Impact
 
 This project addresses a gap that affects every university student in Kenya — and across Africa. The same problems exist at:
