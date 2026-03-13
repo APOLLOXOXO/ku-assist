@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KU-Assist — Elimu Ni Nguvu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; }
+    nav { background: #1a3a6e; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-badge { background: #f5a623; color: #1a3a6e; font-weight: bold; font-size: 14px; padding: 6px 10px; border-radius: 8px; }
+    .nav-title { color: white; font-size: 17px; font-weight: bold; }
+    .nav-sub { color: #f5a623; font-size: 11px; }
+    .nav-tag { background: rgba(255,255,255,0.15); color: white; font-size: 12px; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); }
+    .hero { background: #eef2f9; padding: 36px 24px; text-align: center; }
+    .hero-pill { display: inline-block; background: white; border: 1px solid #d0d8e8; border-radius: 20px; padding: 6px 14px; font-size: 12px; color: #1a3a6e; margin-bottom: 16px; }
+    .hero h1 { font-size: 30px; color: #1a3a6e; margin-bottom: 10px; line-height: 1.3; }
+    .hero h1 span { color: #f5a623; border-bottom: 3px solid #f5a623; }
+    .hero p { font-size: 14px; color: #555; max-width: 480px; margin: 0 auto 24px; line-height: 1.7; }
+    .steps { display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .step { display: flex; align-items: center; gap: 8px; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: #1a3a6e; color: white; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+    .step-num.off { background: white; color: #aaa; border: 1px solid #ccc; }
+    .step-line { width: 48px; height: 1px; background: #ccc; }
+    .main { max-width: 700px; margin: 0 auto; padding: 28px 20px; }
+  </style>
+</head>
+<body>
+    <nav>
+  <div class="nav-logo">
+    <div class="nav-badge">KU</div>
+    <div>
+      <div class="nav-title">KU-Assist</div>
+      <div class="nav-sub">ELIMU NI NGUVU</div>
+    </div>
+  </div>
+  <div class="nav-tag">+ AI Study Companion</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-pill">&#128218; YOUR NOTES. SMARTER.</div>
+  <h1>Ask anything from your<br><span>lecture notes</span></h1>
+  <p>Upload your PDFs, pick a mode, ask your question — get answers grounded in your actual course material, not generic internet results.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><span style="font-size:13px;">Upload notes</span></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">2</div><span style="font-size:13px;">Pick a mode</span></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">3</div><span style="font-size:13px;">Ask a question</span></div>
+  </div>
+</div>
+
+<div class="main">
+    <div style="background:#1a3a6e; border-radius:12px; padding:20px; margin-bottom:24px;">
+    <h3 style="color:white; font-size:15px; margin-bottom:4px;">Step 1 — Upload your notes</h3>
+    <p style="color:rgba(255,255,255,0.7); font-size:12px; margin-bottom:16px;">Drag and drop your lecture PDFs. Multiple files supported.</p>
+    <div id="dropzone" style="border:2px dashed rgba(255,255,255,0.4); border-radius:10px; padding:24px; text-align:center; cursor:pointer;">
+      <div style="font-size:32px; margin-bottom:8px;">&#128196;</div>
+      <p style="color:rgba(255,255,255,0.8); font-size:13px;">Drop your PDFs here or <span onclick="document.getElementById('fileInput').click()" style="color:#f5a623; text-decoration:underline; cursor:pointer;">browse files</span></p>
+      <small style="color:rgba(255,255,255,0.4); font-size:11px;">Supports PDF files up to 50MB each</small>
+      <input type="file" id="fileInput" accept=".pdf" multiple style="display:none;" />
+    </div>
+    <div id="fileList" style="margin-top:12px;"></div>
+    <button onclick="uploadFiles()" id="uploadBtn" style="display:none; margin-top:12px; background:#f5a623; color:#1a3a6e; border:none; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:bold; cursor:pointer; width:100%;">Upload & Process Notes</button>
+    <div id="uploadStatus" style="margin-top:10px; font-size:13px; color:#f5a623;"></div>
+  </div>/
+  <p style="font-size:13px; font-weight:bold; color:#1a3a6e; margin-bottom:10px;">Step 2 — Choose your mode</p>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:24px;">
+    <div class="mode-card active" onclick="selectMode('standard')" id="mode-standard">
+      <span style="font-size:20px;">&#128218;</span>
+      <strong>Standard</strong>
+      <small>From your notes only</small>
+    </div>
+    <div class="mode-card" onclick="selectMode('understand')" id="mode-understand">
+      <span style="font-size:20px;">&#129504;</span>
+      <strong>Understand</strong>
+      <small>Simplified explanation</small>
+    </div>
+    <div class="mode-card" onclick="selectMode('exam')" id="mode-exam">
+      <span style="font-size:20px;">&#127919;</span>
+      <strong>Exam</strong>
+      <small>Exact note wording</small>
+    </div>
+    <div class="mode-card" onclick="selectMode('practical')" id="mode-practical">
+      <span style="font-size:20px;">&#128187;</span>
+      <strong>Practical</strong>
+      <small>Real world examples</small>
+    </div>
+    <div class="mode-card deep" onclick="selectMode('deep')" id="mode-deep" style="grid-column:span 2;">
+      <span style="font-size:20px;">&#127758;</span>
+      <strong>Deep mode — notes + MIT, Stanford, UoN</strong>
+      <small>Fetches live sources to fill gaps in your notes</small>
+    </div>
+  </div>
+
+  <style>
+    .mode-card { border:1px solid #d0d8e8; border-radius:10px; padding:12px; cursor:pointer; background:white; display:flex; flex-direction:column; gap:4px; }
+    .mode-card strong { font-size:13px; color:#1a3a6e; }
+    .mode-card small { font-size:11px; color:#888; }
+    .mode-card.active { border-color:#1a3a6e; background:#eef2f9; }
+    .mode-card.deep { border-color:#f5a623; background:#fff9ee; }
+    .mode-card.deep strong { color:#b37200; }
+  </style>
+  <p style="font-size:13px; font-weight:bold; color:#1a3a6e; margin-bottom:8px;">Step 3 — Ask your question</p>
+  <textarea id="question" rows="3" placeholder="e.g. What is the cutoff frequency of a dielectric slab waveguide?" style="width:100%; border:1px solid #d0d8e8; border-radius:10px; padding:12px; font-size:14px; font-family:Arial,sans-serif; resize:none; margin-bottom:12px;"></textarea>
+  <button onclick="askQuestion()" style="width:100%; background:#1a3a6e; color:white; border:none; border-radius:10px; padding:14px; font-size:15px; font-weight:bold; cursor:pointer;">Ask KU-Assist</button>
+
+  <div id="loading" style="display:none; text-align:center; margin-top:24px;">
+    <div style="font-size:13px; color:#1a3a6e;">&#128218; KU-Assist is thinking...</div>
+  </div>
+
+  <div id="answerBox" style="display:none; background:#f8f9fc; border:1px solid #d0d8e8; border-radius:12px; padding:20px; margin-top:24px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <span id="modeBadge" style="background:#1a3a6e; color:white; font-size:11px; padding:3px 10px; border-radius:10px;"></span>
+      <span id="sourcesSummary" style="font-size:12px; color:#888;"></span>
+    </div>
+    <div id="answerText" style="font-size:14px; color:#333; line-height:1.8; white-space:pre-wrap;"></div>
+    <div id="sourcesBox" style="margin-top:16px; padding-top:12px; border-top:1px solid #d0d8e8;">
+      <div style="font-size:11px; color:#888; margin-bottom:6px;">Retrieved from your notes</div>
+      <div id="notesSources"></div>
+      <div id="webSourcesBox" style="display:none;">
+        <div style="font-size:11px; color:#888; margin-top:10px; margin-bottom:6px;">Web sources</div>
+        <div id="webSources"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  let selectedMode = 'standard';
+
+  function selectMode(mode) {
+    document.querySelectorAll('.mode-card').forEach(c => {
+      if(!c.classList.contains('deep')) c.classList.remove('active');
+    });
+    if(mode !== 'deep') {
+      document.querySelectorAll('.mode-card.deep').forEach(c => c.classList.remove('active'));
+    }
+    document.getElementById('mode-' + mode).classList.add('active');
+    selectedMode = mode;
+  }
+
+  document.getElementById('fileInput').addEventListener('change', function() {
+    const files = this.files;
+    const list = document.getElementById('fileList');
+    list.innerHTML = '';
+    Array.from(files).forEach(f => {
+      list.innerHTML += '<div style="color:white; font-size:12px; margin-top:4px;">&#128196; ' + f.name + '</div>';
+    });
+    document.getElementById('uploadBtn').style.display = 'block';
+  });
+
+  const dropzone = document.getElementById('dropzone');
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.style.borderColor = '#f5a623'; });
+  dropzone.addEventListener('dragleave', () => { dropzone.style.borderColor = 'rgba(255,255,255,0.4)'; });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.style.borderColor = 'rgba(255,255,255,0.4)';
+    document.getElementById('fileInput').files = e.dataTransfer.files;
+    document.getElementById('fileInput').dispatchEvent(new Event('change'));
+  });
+
+  async function uploadFiles() {
+    const files = document.getElementById('fileInput').files;
+    if(!files.length) return;
+    const status = document.getElementById('uploadStatus');
+    status.textContent = 'Uploading and processing...';
+    const formData = new FormData();
+    Array.from(files).forEach(f => formData.append('files', f));
+    try {
+      const res = await fetch('/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      status.textContent = data.message || 'Upload complete.';
+    } catch(e) {
+      status.textContent = 'Upload failed. Make sure the server is running.';
+    }
+  }
+
+  async function askQuestion() {
+    const question = document.getElementById('question').value.trim();
+    if(!question) { alert('Please enter a question.'); return; }
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('answerBox').style.display = 'none';
+    try {
+      const url = selectedMode === 'deep' ? '/ask/deep' : '/ask';
+      const body = selectedMode === 'deep' ? { question } : { question, mode: selectedMode };
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('answerBox').style.display = 'block';
+      document.getElementById('modeBadge').textContent = selectedMode + ' mode';
+      document.getElementById('answerText').textContent = data.answer;
+      const notes = data.sources || [];
+      document.getElementById('sourcesSummary').textContent = 'Sources: ' + notes.length + ' note chunk(s) retrieved';
+      const notesBox = document.getElementById('notesSources');
+      notesBox.innerHTML = '';
+      notes.forEach(s => {
+        notesBox.innerHTML += '<span style="display:inline-block; background:#eef2f9; color:#1a3a6e; font-size:11px; padding:3px 8px; border-radius:10px; margin:2px;">' + (s.title || s.source.split('\\').pop()) + ' — page ' + (s.page + 1) + '</span>';
+      });
+      if(selectedMode === 'deep' && data.web_sources && data.web_sources.length) {
+        document.getElementById('webSourcesBox').style.display = 'block';
+        const webBox = document.getElementById('webSources');
+        webBox.innerHTML = '';
+        data.web_sources.forEach(s => {
+          webBox.innerHTML += '<a href="' + s.url + '" target="_blank" style="display:block; color:#1a3a6e; font-size:12px; text-decoration:underline; margin-top:4px;">' + s.title + '</a>';
+        });
+      }
+    } catch(e) {
+      document.getElementById('loading').style.display = 'none';
+      alert('Something went wrong. Make sure the server is running.');
+    }
+  }
+</script>
+</body>
+</html>
